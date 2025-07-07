@@ -43,8 +43,15 @@ class GraduandoController extends Controller
         $request->validate([
             'carrera' => 'required|string|max:255',
             'nombre' => 'required|string|max:255',
-            'telefono' => 'required|string|max:20',
-            'cantidad_invitados' => 'required|integer|min:1|max:2'
+            'telefono' => [
+                'required',
+                'string',
+                'max:25',
+                'regex:/^(\+504\s?)?([0-9]{4}-?[0-9]{4}|[0-9]{8})$/'
+            ],
+            'cantidad_invitados' => 'required|integer|min:1|max:4'
+        ], [
+            'telefono.regex' => 'El formato del teléfono no es válido. Use formatos como: 8899-1011, 96378797, +504 96378797 o +504 8899-1011'
         ]);
 
         $graduando = Graduando::create($request->all());
@@ -52,7 +59,7 @@ class GraduandoController extends Controller
         // Crear las invitaciones automáticamente
         for ($i = 0; $i < $graduando->cantidad_invitados; $i++) {
             $invitacion = Invitacion::create([
-                'fecha' => now()->addDays(30), // Fecha de graduación en 30 días
+                'fecha' => '07/10/2025', // Fecha de graduación
             ]);
             
             $graduando->invitaciones()->attach($invitacion->id);
@@ -87,8 +94,15 @@ class GraduandoController extends Controller
         $request->validate([
             'carrera' => 'required|string|max:255',
             'nombre' => 'required|string|max:255',
-            'telefono' => 'required|string|max:20',
-            'cantidad_invitados' => 'required|integer|min:1|max:2'
+            'telefono' => [
+                'required',
+                'string',
+                'max:25',
+                'regex:/^(\+504\s?)?([0-9]{4}-?[0-9]{4}|[0-9]{8})$/'
+            ],
+            'cantidad_invitados' => 'required|integer|min:1|max:4'
+        ], [
+            'telefono.regex' => 'El formato del teléfono no es válido. Use formatos como: 8899-1011, 96378797, +504 96378797 o +504 8899-1011'
         ]);
 
         $cantidadAnterior = $graduando->cantidad_invitados;
@@ -103,7 +117,7 @@ class GraduandoController extends Controller
                 $diferencia = $graduando->cantidad_invitados - $invitacionesActuales;
                 for ($i = 0; $i < $diferencia; $i++) {
                     $invitacion = Invitacion::create([
-                        'fecha' => now()->addDays(30),
+                        'fecha' => '07/10/2025', // Fecha de graduación
                     ]);
                     $graduando->invitaciones()->attach($invitacion->id);
                 }
