@@ -42,7 +42,7 @@ class GraduandoController extends Controller
     {
         $request->validate([
             'carrera' => 'required|string|max:255',
-            'cuenta' => 'required|string|max:255|unique:graduandos,cuenta',
+            'numero_cuenta' => 'nullable|string|max:255|unique:graduandos,numero_cuenta',
             'nombre' => 'required|string|max:255',
             'telefono' => [
                 'required',
@@ -94,7 +94,7 @@ class GraduandoController extends Controller
     {
         $request->validate([
             'carrera' => 'required|string|max:255',
-            'cuenta' => 'required|string|max:255|unique:graduandos,cuenta,' . $graduando->id,
+            'numero_cuenta' => 'nullable|string|max:255|unique:graduandos,numero_cuenta,' . $graduando->id,
             'nombre' => 'required|string|max:255',
             'telefono' => [
                 'required',

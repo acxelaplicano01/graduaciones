@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('graduandos', function (Blueprint $table) {
             $table->id();
             $table->string('carrera');
-            $table->string('cuenta')->unique();
+            $table->string('numero_cuenta')->nullable();
             $table->string('nombre');
             $table->string('telefono');
             $table->integer('cantidad_invitados')->default(1);

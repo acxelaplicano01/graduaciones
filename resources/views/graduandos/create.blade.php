@@ -50,8 +50,7 @@
                                    placeholder="Ej: 20202300165"
                                    pattern="[0-9]{11}"
                                    maxlength="11"
-                                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                   required>
+                                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                             <p class="mt-1 text-xs text-gray-500">Número de cuenta del estudiante (11 dígitos)</p>
                             @error('numero_cuenta')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>

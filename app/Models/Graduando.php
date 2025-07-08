@@ -11,7 +11,7 @@ class Graduando extends Model
 
     protected $fillable = [
         'carrera',
-        'cuenta', 
+        'numero_cuenta', 
         'nombre',
         'telefono',
         'cantidad_invitados'

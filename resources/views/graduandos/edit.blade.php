@@ -27,6 +27,23 @@
                             @enderror
                         </div>
 
+                        <!-- Número de cuenta -->
+                        <div class="md:col-span-2 sm:md:col-span-1">
+                            <label for="numero_cuenta" class="block text-sm font-medium text-gray-700">Número de Cuenta</label>
+                            <input type="text" 
+                                   name="numero_cuenta" 
+                                   id="numero_cuenta" 
+                                   value="{{ old('numero_cuenta', $graduando->numero_cuenta) }}"
+                                   placeholder="Ej: 20202300165"
+                                   pattern="[0-9]{11}"
+                                   maxlength="11"
+                                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                            <p class="mt-1 text-xs text-gray-500">Número de cuenta del estudiante (11 dígitos)</p>
+                            @error('numero_cuenta')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
                         <!-- Nombre del estudiante -->
                         <div class="md:col-span-2 sm:md:col-span-1">
                             <label for="nombre" class="block text-sm font-medium text-gray-700">Nombre del Estudiante</label>
