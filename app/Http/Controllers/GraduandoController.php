@@ -49,7 +49,7 @@ class GraduandoController extends Controller
                 'max:25',
                 'regex:/^(\+504\s?)?([0-9]{4}-?[0-9]{4}|[0-9]{8})$/'
             ],
-            'cantidad_invitados' => 'required|integer|min:1|max:4'
+            'cantidad_invitados' => 'required|integer|min:1|max:5'
         ], [
             'telefono.regex' => 'El formato del teléfono no es válido. Use formatos como: 8899-1011, 96378797, +504 96378797 o +504 8899-1011'
         ]);
@@ -100,9 +100,9 @@ class GraduandoController extends Controller
                 'max:25',
                 'regex:/^(\+504\s?)?([0-9]{4}-?[0-9]{4}|[0-9]{8})$/'
             ],
-            'cantidad_invitados' => 'required|integer|min:1|max:4'
+            'cantidad_invitados' => 'required|integer|min:1|max:5'
         ], [
-            'telefono.regex' => 'El formato del teléfono no es válido. Use formatos como: 8899-1011, 96378797, +504 96378797 o +504 8899-1011'
+            'telefono.regex' => 'El formato del teléfono no es válido. Use formatos como: 8899-1011, 96378797, +504 96374795 o +504 8899-1011'
         ]);
 
         $cantidadAnterior = $graduando->cantidad_invitados;
@@ -150,5 +150,54 @@ class GraduandoController extends Controller
 
         return redirect()->route('graduandos.index')
             ->with('success', 'Graduando eliminado exitosamente.');
+    }
+    
+    /**
+     * Mostrar invitación pública.
+     */
+    public function mostrarInvitacion($codigo)
+    {
+        $invitacion = Invitacion::where('codigo', $codigo)->firstOrFail();
+        $graduando = $invitacion->graduandos()->first();
+        
+        if (!$graduando) {
+            abort(404, 'Invitación no encontrada');
+        }
+
+        return view('invitaciones.mostrar', compact('invitacion', 'graduando'));
+    }
+    
+    /**
+     * Verificar código de invitación desde QR.
+     */
+    public function verificarInvitacion($codigo)
+    {
+        try {
+            $invitacion = Invitacion::where('codigo', $codigo)->first();
+            
+            if (!$invitacion) {
+                return view('invitaciones.verificar', [
+                    'valido' => false,
+                    'mensaje' => 'Código de invitación no válido',
+                    'codigo' => $codigo
+                ]);
+            }
+            
+            $graduando = $invitacion->graduandos()->first();
+            
+            return view('invitaciones.verificar', [
+                'valido' => true,
+                'invitacion' => $invitacion,
+                'graduando' => $graduando,
+                'codigo' => $codigo
+            ]);
+            
+        } catch (\Exception $e) {
+            return view('invitaciones.verificar', [
+                'valido' => false,
+                'mensaje' => 'Error al verificar la invitación',
+                'codigo' => $codigo
+            ]);
+        }
     }
 }

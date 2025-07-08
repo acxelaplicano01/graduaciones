@@ -2,14 +2,14 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GraduandoController;
-use App\Http\Controllers\InvitacionController;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-// Ruta pública para mostrar invitaciones (no requiere autenticación)
-Route::get('/invitacion/{codigo}', [InvitacionController::class, 'mostrar'])->name('invitacion.mostrar');
+// Rutas públicas para invitaciones
+Route::get('/invitacion/{codigo}', [GraduandoController::class, 'mostrarInvitacion'])->name('invitacion.mostrar');
+Route::get('/verificar-invitacion/{codigo}', [GraduandoController::class, 'verificarInvitacion'])->name('invitacion.verificar');
 
 Route::middleware([
     'auth:sanctum',

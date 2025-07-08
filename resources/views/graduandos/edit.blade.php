@@ -70,6 +70,7 @@
                                 <option value="2" {{ old('cantidad_invitados', $graduando->cantidad_invitados) == '2' ? 'selected' : '' }}>2 invitados</option>
                                 <option value="3" {{ old('cantidad_invitados', $graduando->cantidad_invitados) == '3' ? 'selected' : '' }}>3 invitado</option>
                                 <option value="4" {{ old('cantidad_invitados', $graduando->cantidad_invitados) == '4' ? 'selected' : '' }}>4 invitados</option>
+                                <option value="5" {{ old('cantidad_invitados', $graduando->cantidad_invitados) == '5' ? 'selected' : '' }}>5 invitados</option>
                             </select>
                             @error('cantidad_invitados')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>

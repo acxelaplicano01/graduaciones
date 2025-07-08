@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invitación a Graduación - UNAH</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -63,7 +64,7 @@
                         Universidad Nacional Autónoma de Honduras
                     </h1>
                     <p class="text-unah-blue text-lg font-medium opacity-90">
-                        Ciudad Universitaria José Trinidad Reyes
+                        CAMPUS CHOLUTECA
                     </p>
                 </div>
             </div>
@@ -72,8 +73,12 @@
             <div class="p-8 md:p-12">
                 <!-- Título de la ceremonia -->
                 <div class="text-center mb-8">
-                    <h2 class="font-playfair text-4xl md:text-5xl font-bold text-unah-blue mb-4">
-                        Ceremonia de Graduación
+                    <h1 class="font-playfair font-bold text-unah-blue">El PhD. Odir Aarón Fernández Flores, 
+                        Rector de la Universidad Nacional Autónoma de Honduras y el PhD. Céleo 
+                        Emilio Arias Moncada, Director del Centro Universitario Regional del Litoral Pácifico <br>
+                    Tienen el honor de invitarle a la:</h1>
+                    <h2 class="font-playfair text-3xl md:text-5xl font-bold text-unah-blue mb-4">
+                       Ceremonia de Graduación
                     </h2>
                     <div class="w-32 h-1 gold-gradient mx-auto rounded-full"></div>
                 </div>
@@ -158,7 +163,7 @@
                         <div class="w-20 h-1 bg-orange-400 mx-auto rounded-full"></div>
                     </div>
                     
-                    <div class="grid md:grid-cols-2 gap-6">
+                    <div class="grid md:grid-cols-3 gap-6">
                         <div class="text-center">
                             <p class="text-sm font-medium text-orange-700 mb-1">Número de Invitación</p>
                             <p class="text-3xl font-bold text-orange-800">N° {{ $invitacion->numero_invitacion }}</p>
@@ -167,25 +172,12 @@
                             <p class="text-sm font-medium text-orange-700 mb-1">Código de Acceso</p>
                             <p class="text-3xl font-mono font-bold text-orange-800 tracking-wider">{{ $invitacion->codigo }}</p>
                         </div>
-                    </div>
-                </div>
-
-                <!-- Instrucciones importantes -->
-                <div class="bg-red-50 border-l-4 border-red-400 p-6 rounded-r-xl mb-8">
-                    <div class="flex">
-                        <div class="flex-shrink-0">
-                            <svg class="h-6 w-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.96-.833-2.73 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
-                            </svg>
-                        </div>
-                        <div class="ml-3">
-                            <h3 class="text-lg font-medium text-red-800">Instrucciones Importantes</h3>
-                            <div class="mt-2 text-sm text-red-700 space-y-1">
-                                <p>• Presente este código en la entrada el día de la graduación</p>
-                                <p>• Esta invitación es personal e intransferible</p>
-                                <p>• Se recomienda llegar 30 minutos antes de la ceremonia</p>
-                                <p>• Conserve este código hasta el día del evento</p>
+                        <div class="text-center">
+                            <p class="text-sm font-medium text-orange-700 mb-3">Código QR</p>
+                            <div class="flex justify-center">
+                                <canvas id="qrcode" class="bg-white p-3 rounded-lg shadow-md"></canvas>
                             </div>
+                            <p class="text-xs text-orange-600 mt-2">Escanea para verificar</p>
                         </div>
                     </div>
                 </div>
@@ -212,20 +204,49 @@
                 Imprimir Invitación
             </button>
             
-            <button onclick="compartirInvitacion()" 
-                    class="bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-6 rounded-xl transition-colors duration-200 flex items-center justify-center">
-                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+            <button id="whatsappBtn" onclick="compartirInvitacion()" 
+                    class="bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-6 rounded-xl transition-all duration-300 flex items-center justify-center min-w-[200px]">
+                <svg id="whatsappIcon" class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.479 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.262.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
                 </svg>
-                Compartir por WhatsApp
+                <svg id="checkIcon" class="w-5 h-5 mr-2 hidden" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                </svg>
+                <span id="whatsappText">Compartir por WhatsApp</span>
             </button>
         </div>
     </div>
 
     <script>
+        let invitacionEnviada = false;
+
+        // Generar QR al cargar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                const qrCanvas = document.getElementById('qrcode');
+                const verificacionUrl = `${window.location.origin}/verificar-invitacion/{{ $invitacion->codigo }}`;
+                
+                console.log('Generando QR para URL:', verificacionUrl);
+                
+                const qr = new QRious({
+                    element: qrCanvas,
+                    value: verificacionUrl,
+                    size: 120,
+                    foreground: '#1e3a8a', // Color azul UNAH
+                    background: '#ffffff'
+                });
+                
+                console.log('QR generado exitosamente');
+                
+            } catch (error) {
+                console.error('Error generando QR:', error);
+                document.getElementById('qrcode').innerHTML = '<p class="text-red-500 text-xs">Error generando QR</p>';
+            }
+        });
+
         function compartirInvitacion() {
             const url = window.location.href;
-            const mensaje = `🎓 *Invitación a Graduación - UNAH*
+            const mensaje = `*Invitación a Graduación - UNAH CAMPUS CHOLUTECA*
 
 *Graduando:* {{ $graduando->nombre }}
 *Carrera:* {{ $graduando->carrera }}
@@ -233,14 +254,69 @@
 *Hora:* 3:00 PM
 *Lugar:* Hotel Jicaral, Salón Guanacaure 3
 
-📋 *Código de Invitación:* {{ $invitacion->codigo }}
+*Código de Invitación:* {{ $invitacion->codigo }}
 
-🔗 Ver invitación completa: ${url}
+Ver invitación completa: ${url}
 
-¡Te esperamos en este momento tan especial! 🎉`;
+¡Te esperamos en este momento tan especial!`;
 
             const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(mensaje)}`;
             window.open(whatsappUrl, '_blank');
+
+            // Cambiar el estado del botón después del primer envío
+            if (!invitacionEnviada) {
+                invitacionEnviada = true;
+                cambiarEstadoBoton();
+                
+                // Después de 3 segundos, permitir reenviar
+                setTimeout(() => {
+                    permitirReenvio();
+                }, 3000);
+            }
+        }
+
+        function cambiarEstadoBoton() {
+            const btn = document.getElementById('whatsappBtn');
+            const whatsappIcon = document.getElementById('whatsappIcon');
+            const checkIcon = document.getElementById('checkIcon');
+            const text = document.getElementById('whatsappText');
+
+            // Cambiar apariencia del botón
+            btn.classList.remove('bg-green-600', 'hover:bg-green-700');
+            btn.classList.add('bg-green-700', 'cursor-default');
+            
+            // Cambiar iconos
+            whatsappIcon.classList.add('hidden');
+            checkIcon.classList.remove('hidden');
+            
+            // Cambiar texto
+            text.textContent = 'Enviado ✓';
+            
+            // Deshabilitar temporalmente
+            btn.disabled = true;
+            btn.onclick = null;
+        }
+
+        function permitirReenvio() {
+            const btn = document.getElementById('whatsappBtn');
+            const whatsappIcon = document.getElementById('whatsappIcon');
+            const checkIcon = document.getElementById('checkIcon');
+            const text = document.getElementById('whatsappText');
+
+            // Restaurar apariencia del botón para reenvío
+            btn.classList.remove('bg-green-700', 'cursor-default');
+            btn.classList.add('bg-blue-600', 'hover:bg-blue-700');
+            
+            // Cambiar iconos de vuelta a WhatsApp
+            whatsappIcon.classList.remove('hidden');
+            checkIcon.classList.add('hidden');
+            
+            // Cambiar texto a reenviar
+            text.textContent = 'Reenviar por WhatsApp';
+            
+            // Reactivar botón
+            btn.disabled = false;
+            btn.onclick = compartirInvitacion;
         }
     </script>
 </body>
