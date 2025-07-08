@@ -14,11 +14,14 @@ class Invitacion extends Model
     protected $fillable = [
         'numero_invitacion',
         'fecha',
-        'codigo'
+        'codigo',
+        'estado',
+        'fecha_tomada'
     ];
 
     protected $casts = [
-        'fecha' => 'date'
+        'fecha' => 'date',
+        'fecha_tomada' => 'datetime'
     ];
 
     public function graduandos()

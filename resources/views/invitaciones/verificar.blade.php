@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Verificación de Invitación - UNAH</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -153,12 +154,40 @@
 
                     <!-- Mensaje de éxito -->
                     <div class="text-center mt-8 p-4 bg-green-50 rounded-xl border border-green-200">
-                        <p class="text-green-800 font-medium">
-                            Esta invitación es válida para el acceso al evento
-                        </p>
-                        <p class="text-green-600 text-sm mt-1">
-                            Presente este código en la entrada
-                        </p>
+                        @if(isset($yaTomada) && $yaTomada)
+                            <div class="bg-orange-100 border border-orange-300 rounded-lg p-4 mb-4">
+                                <div class="flex items-center justify-center mb-2">
+                                    <svg class="w-6 h-6 text-orange-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.464 0L4.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                                    </svg>
+                                    <span class="text-orange-800 font-medium">Invitación Ya Utilizada</span>
+                                </div>
+                                <p class="text-orange-700 text-sm">
+                                    Esta invitación fue marcada como utilizada el {{ $invitacion->fecha_tomada ? $invitacion->fecha_tomada->format('d/m/Y H:i:s') : 'fecha no disponible' }}
+                                </p>
+                            </div>
+                        @else
+                            <p class="text-green-800 font-medium mb-4">
+                                Esta invitación es válida para el acceso al evento
+                            </p>
+                            <p class="text-green-600 text-sm mb-4">
+                                Presente este código en la entrada
+                            </p>
+                            
+                            <!-- Botón para marcar como tomada -->
+                            <button id="marcarTomadaBtn" onclick="marcarInvitacionTomada()" 
+                                    class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-xl transition-all duration-300 inline-flex items-center">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span id="btnText">Marcar como Utilizada</span>
+                            </button>
+                            
+                            <!-- Mensaje de confirmación -->
+                            <div id="confirmacionMensaje" class="hidden mt-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                                <p class="text-blue-800 text-sm">Invitación marcada como utilizada exitosamente</p>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -260,6 +289,74 @@
                 navigator.vibrate([500]); // Vibración de error
             @endif
         }
+
+        @if($valido && !(isset($yaTomada) && $yaTomada))
+        function marcarInvitacionTomada() {
+            const btn = document.getElementById('marcarTomadaBtn');
+            const btnText = document.getElementById('btnText');
+            const confirmacion = document.getElementById('confirmacionMensaje');
+            
+            // Deshabilitar botón temporalmente
+            btn.disabled = true;
+            btnText.textContent = 'Procesando...';
+            btn.classList.add('opacity-50', 'cursor-not-allowed');
+            
+            // Realizar petición AJAX
+            fetch('/marcar-tomada/{{ $codigo }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Éxito - cambiar apariencia del botón
+                    btn.classList.remove('bg-blue-600', 'hover:bg-blue-700', 'opacity-50', 'cursor-not-allowed');
+                    btn.classList.add('bg-green-600', 'cursor-default');
+                    btnText.textContent = 'Marcada como Utilizada ✓';
+                    
+                    // Mostrar mensaje de confirmación
+                    confirmacion.classList.remove('hidden');
+                    
+                    // Cambiar icono del botón
+                    btn.innerHTML = `
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        <span>Utilizada ✓</span>
+                    `;
+                    
+                    // Vibración de éxito
+                    if (navigator.vibrate) {
+                        navigator.vibrate([200, 100, 200]);
+                    }
+                    
+                    // Desactivar permanentemente
+                    btn.onclick = null;
+                    
+                } else {
+                    // Error - mostrar mensaje
+                    alert('Error: ' + data.message);
+                    
+                    // Restaurar botón
+                    btn.disabled = false;
+                    btnText.textContent = 'Marcar como Utilizada';
+                    btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error al procesar la solicitud');
+                
+                // Restaurar botón
+                btn.disabled = false;
+                btnText.textContent = 'Marcar como Utilizada';
+                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+            });
+        }
+        @endif
     </script>
 </body>
 </html>

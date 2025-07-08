@@ -189,7 +189,8 @@ class GraduandoController extends Controller
                 'valido' => true,
                 'invitacion' => $invitacion,
                 'graduando' => $graduando,
-                'codigo' => $codigo
+                'codigo' => $codigo,
+                'yaTomada' => $invitacion->estado === 'tomada'
             ]);
             
         } catch (\Exception $e) {
@@ -198,6 +199,47 @@ class GraduandoController extends Controller
                 'mensaje' => 'Error al verificar la invitación',
                 'codigo' => $codigo
             ]);
+        }
+    }
+    
+    /**
+     * Marcar invitación como tomada.
+     */
+    public function marcarTomada($codigo)
+    {
+        try {
+            $invitacion = Invitacion::where('codigo', $codigo)->first();
+            
+            if (!$invitacion) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invitación no encontrada'
+                ], 404);
+            }
+            
+            if ($invitacion->estado === 'tomada') {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Esta invitación ya fue utilizada'
+                ], 400);
+            }
+            
+            $invitacion->update([
+                'estado' => 'tomada',
+                'fecha_tomada' => now()
+            ]);
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Invitación marcada como utilizada',
+                'fecha_tomada' => $invitacion->fecha_tomada->format('d/m/Y H:i:s')
+            ]);
+            
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al marcar la invitación'
+            ], 500);
         }
     }
 }
