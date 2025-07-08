@@ -3,6 +3,6 @@
 
 <div>
     <div>
-        <h3> Bienvenido al sistema de invitaciones</h3>
+        <h3> Bienvenido al sistema de invitaciones xd</h3>
     </div>
 </div>
