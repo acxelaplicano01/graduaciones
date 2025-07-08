@@ -265,15 +265,23 @@
     <!-- JavaScript para funcionalidades de WhatsApp y copiar -->
     <script>
         function enviarPorWhatsApp(nombreGraduando, carrera, codigo, numeroInvitacion, fecha, telefono) {
-            const mensaje = `🎓 *Invitación a Graduación*
+            const urlInvitacion = `${window.location.origin}/invitacion/${codigo}`;
+            
+            const mensaje = `🎓 *Invitación a Graduación - UNAH*
 
-*Graduando:* ${nombreGraduando}
-*Carrera:* ${carrera}
-*Fecha de Graduación:* ${fecha}
+*Ceremonia de Graduación*
+📅 *Fecha:* Jueves 10 de Julio 2025
+🕒 *Hora:* Ceremonia 3:00 PM
+📍 *Lugar:* Hotel Jicaral, Salón Guanacaure 3
+
+👨‍🎓 *Graduando:* ${nombreGraduando}
+🎓 *Carrera:* ${carrera}
 
 📋 *Detalles de la Invitación:*
 • Número de Invitación: ${numeroInvitacion}
 • Código de Acceso: *${codigo}*
+
+🔗 *Ver invitación completa:* ${urlInvitacion}
 
 📍 Presenta este código en la entrada el día de la graduación.
 

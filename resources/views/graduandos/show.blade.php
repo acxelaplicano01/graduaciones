@@ -154,19 +154,27 @@
     <!-- JavaScript para funcionalidades adicionales -->
     <script>
         function enviarPorWhatsApp(nombreGraduando, carrera, codigo, numeroInvitacion, fecha, telefono) {
-            const mensaje = `🎓 *Invitación a Graduación*
+            const urlInvitacion = `${window.location.origin}/invitacion/${codigo}`;
+            
+            const mensaje = `🎓 *Invitación a Graduación - UNAH*
 
-*Graduando:* ${nombreGraduando}
-*Carrera:* ${carrera}
-*Fecha de Graduación:* ${fecha}
+        *Ceremonia de Graduación*
+        📅 *Fecha:* Jueves 10 de Julio 2025
+        🕒 *Hora:* Ceremonia 3:00 PM
+        📍 *Lugar:* Hotel Jicaral, Salón Guanacaure 3
 
-📋 *Detalles de la Invitación:*
-• Número de Invitación: ${numeroInvitacion}
-• Código de Acceso: *${codigo}*
+        👨‍🎓 *Graduando:* ${nombreGraduando}
+        🎓 *Carrera:* ${carrera}
 
-📍 Presenta este código en la entrada el día de la graduación.
+        📋 *Detalles de la Invitación:*
+        • Número de Invitación: ${numeroInvitacion}
+        • Código de Acceso: *${codigo}*
 
-¡Te esperamos en este momento tan especial! 🎉`;
+        🔗 *Ver invitación completa:* ${urlInvitacion}
+
+        📍 Presenta este código en la entrada el día de la graduación.
+
+        ¡Te esperamos en este momento tan especial! 🎉`;
 
             // Limpiar el número de teléfono (remover espacios, guiones, paréntesis)
             let numeroLimpio = telefono.replace(/[\s\-\(\)\+]/g, '');

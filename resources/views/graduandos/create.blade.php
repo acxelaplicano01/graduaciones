@@ -40,6 +40,24 @@
                             @enderror
                         </div>
 
+                        <!-- Número de cuenta -->
+                        <div class="md:col-span-2 sm:md:col-span-1">
+                            <label for="numero_cuenta" class="block text-sm font-medium text-gray-700">Número de Cuenta</label>
+                            <input type="text" 
+                                   name="numero_cuenta" 
+                                   id="numero_cuenta" 
+                                   value="{{ old('numero_cuenta') }}"
+                                   placeholder="Ej: 20202300165"
+                                   pattern="[0-9]{11}"
+                                   maxlength="11"
+                                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                   required>
+                            <p class="mt-1 text-xs text-gray-500">Número de cuenta del estudiante (11 dígitos)</p>
+                            @error('numero_cuenta')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
                         <!-- Número de teléfono -->
                         <div class="md:col-span-2 sm:md:col-span-1">
                             <label for="telefono" class="block text-sm font-medium text-gray-700">Número de Teléfono</label>
@@ -66,8 +84,8 @@
                                 <option value="">Seleccionar cantidad</option>
                                 <option value="1" {{ old('cantidad_invitados') == '1' ? 'selected' : '' }}>1 invitado</option>
                                 <option value="2" {{ old('cantidad_invitados') == '2' ? 'selected' : '' }}>2 invitados</option>
-                                <option value="2" {{ old('cantidad_invitados') == '3' ? 'selected' : '' }}>3 invitados</option>
-                                <option value="2" {{ old('cantidad_invitados') == '4' ? 'selected' : '' }}>4 invitados</option>
+                                <option value="3" {{ old('cantidad_invitados') == '3' ? 'selected' : '' }}>3 invitados</option>
+                                <option value="4" {{ old('cantidad_invitados') == '4' ? 'selected' : '' }}>4 invitados</option>
                             </select>
                             @error('cantidad_invitados')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
