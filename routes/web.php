@@ -22,4 +22,7 @@ Route::middleware([
     Route::resource('graduandos', GraduandoController::class);
     Route::get('/verificar-invitacion/{codigo}', [GraduandoController::class, 'verificarInvitacion'])->name('invitacion.verificar');
     Route::post('/marcar-tomada/{codigo}', [GraduandoController::class, 'marcarTomada'])->name('invitacion.marcar-tomada');
+
+    Route::get('/verificar-invitacion', [GraduandoController::class, 'formularioVerificar'])->name('invitacion.formulario');
+    Route::post('/verificar-invitacion', [GraduandoController::class, 'procesarVerificacion'])->name('invitacion.procesar');
 });

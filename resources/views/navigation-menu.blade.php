@@ -18,6 +18,9 @@
                     <x-nav-link href="{{ route('graduandos.index') }}" :active="request()->routeIs('graduandos.*')">
                         {{ __('Graduandos') }}
                     </x-nav-link>
+                    <x-nav-link href="{{ route('invitacion.formulario') }}" :active="request()->routeIs('invitacion.formulario')">
+                {{ __('Verificar') }}
+            </x-nav-link>
                 </div>
             </div>
 
@@ -147,6 +150,9 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link href="{{ route('graduandos.index') }}" :active="request()->routeIs('graduandos.*')">
                 {{ __('Graduandos') }}
+            </x-responsive-nav-link>
+             <x-responsive-nav-link href="{{ route('invitacion.formulario') }}" :active="request()->routeIs('invitacion.formulario')">
+                {{ __('Verificar') }}
             </x-responsive-nav-link>
         </div>
 

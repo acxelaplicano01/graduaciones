@@ -244,4 +244,53 @@ class GraduandoController extends Controller
             ], 500);
         }
     }
+
+    /**
+     * Mostrar formulario para verificar invitación.
+     */
+    public function formularioVerificar()
+    {
+        return view('invitaciones.formulario');
+    }
+    
+    /**
+     * Procesar verificación de invitación desde formulario.
+     */
+    public function procesarVerificacion(Request $request)
+    {
+        $request->validate([
+            'codigo' => 'required|string|max:255'
+        ], [
+            'codigo.required' => 'Debe ingresar un código de invitación'
+        ]);
+        
+        $codigo = trim($request->codigo);
+        
+        try {
+            $invitacion = Invitacion::where('codigo', $codigo)->first();
+            
+            if (!$invitacion) {
+                return back()->withErrors([
+                    'codigo' => 'El código de invitación no es válido'
+                ])->withInput();
+            }
+            
+            $graduando = $invitacion->graduandos()->first();
+            
+            return view('invitaciones.verificar', [
+                'valido' => true,
+                'invitacion' => $invitacion,
+                'graduando' => $graduando,
+                'codigo' => $codigo,
+                'yaTomada' => $invitacion->estado === 'tomada'
+            ]);
+            
+        } catch (\Exception $e) {
+            return back()->withErrors([
+                'codigo' => 'Error al verificar la invitación'
+            ])->withInput();
+        }
+    }
+
+    
 }

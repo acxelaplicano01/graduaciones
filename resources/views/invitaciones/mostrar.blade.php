@@ -169,15 +169,15 @@
                             <p class="text-3xl font-bold text-orange-800">N° {{ $invitacion->numero_invitacion }}</p>
                         </div>
                         <div class="text-center">
-                            <p class="text-sm font-medium text-orange-700 mb-1">Código de Acceso</p>
-                            <p class="text-3xl font-mono font-bold text-orange-800 tracking-wider">{{ $invitacion->codigo }}</p>
-                        </div>
-                        <div class="text-center">
                             <p class="text-sm font-medium text-orange-700 mb-3">Código QR</p>
                             <div class="flex justify-center">
                                 <canvas id="qrcode" class="bg-white p-3 rounded-lg shadow-md"></canvas>
                             </div>
                             <p class="text-xs text-orange-600 mt-2">Escanea para verificar</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-sm font-medium text-orange-700 mb-1">Código de Acceso</p>
+                            <p class="text-3xl font-mono font-bold text-orange-800 tracking-wider">{{ $invitacion->codigo }}</p>
                         </div>
                     </div>
                 </div>
