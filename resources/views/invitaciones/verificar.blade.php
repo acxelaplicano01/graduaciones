@@ -48,16 +48,16 @@
         
         @keyframes pulse-success {
             0%, 100% {
-                box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4);
+                box-shadow: 0 0 0 0 rgba(1, 44, 17, 0.4);
             }
             50% {
-                box-shadow: 0 0 0 20px rgba(34, 197, 94, 0);
+                box-shadow: 0 0 0 20px rgba(28, 185, 86, 0);
             }
         }
         
         @keyframes pulse-error {
             0%, 100% {
-                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+                box-shadow: 0 0 0 0 rgba(61, 6, 6, 0.4);
             }
             50% {
                 box-shadow: 0 0 0 20px rgba(239, 68, 68, 0);
@@ -71,14 +71,19 @@
             <!-- Invitación Válida -->
             <div class="verification-card bg-white rounded-3xl overflow-hidden">
                 <!-- Header de éxito -->
-                <div class="bg-gradient-to-r from-green-500 to-emerald-600 p-8 text-center text-white">
+                <div class="bg-gradient-to-r {{$yaTomada ? 'from-orange-500 to-orange-600' : 'from-green-500 to-emerald-600'}} p-8 text-center text-white">
                     <div class="w-20 h-20 bg-white rounded-full mx-auto mb-4 flex items-center justify-center pulse-success">
                         <svg class="w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
                         </svg>
                     </div>
-                    <h1 class="font-playfair text-3xl font-bold mb-2">¡Invitación Válida!</h1>
-                    <p class="text-green-100 text-lg">Esta invitación ha sido verificada exitosamente</p>
+                    @if(isset($yaTomada) && $yaTomada)
+                        <h1 class="font-playfair text-3xl font-bold mb-2">¡Invitación Ya Utilizada!</h1>
+                        <p class="text-orange-100 text-lg">Esta invitación ya ha sido utilizada</p>
+                    @else
+                        <h1 class="font-playfair text-3xl font-bold mb-2">¡Invitación Verificada!</h1>
+                        <p class="text-green-100 text-lg">Esta invitación ha sido verificada exitosamente</p>
+                    @endif
                 </div>
 
                 <!-- Contenido de la invitación -->
